@@ -60,6 +60,16 @@ jobs:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Check if GHCR is available
+      id: check_ghcr
+      run: |
+        # 尝试访问 GHCR，检查权限
+        if docker pull ghcr.io/${{ github.repository_owner }}/rustdesk-update-api:latest 2>/dev/null; then
+          echo "ghcr_available=true" >> $GITHUB_OUTPUT
+        else
+          echo "ghcr_available=false" >> $GITHUB_OUTPUT
+        fi
 
     - name: Extract version tag
       id: extract_tag
@@ -71,15 +81,23 @@ jobs:
           echo "tag=latest" >> $GITHUB_OUTPUT
         fi
 
-    - name: Build and push
+    - name: Build and push to Docker Hub
       uses: docker/build-push-action@v4
       with:
         context: .
         push: true
         tags: |
           ${{ secrets.DOCKERHUB_USERNAME }}/rustdesk-update-api:${{ steps.extract_tag.outputs.tag }}
-          ghcr.io/${{ github.repository_owner }}/rustdesk-update-api:${{ steps.extract_tag.outputs.tag }}
           ${{ secrets.DOCKERHUB_USERNAME }}/rustdesk-update-api:latest
+
+    - name: Build and push to GitHub Container Registry (if available)
+      if: steps.check_ghcr.outputs.ghcr_available == 'true'
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        push: true
+        tags: |
+          ghcr.io/${{ github.repository_owner }}/rustdesk-update-api:${{ steps.extract_tag.outputs.tag }}
           ghcr.io/${{ github.repository_owner }}/rustdesk-update-api:latest
 
   release:
