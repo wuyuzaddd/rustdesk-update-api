@@ -79,8 +79,7 @@ jobs:
         context: .
         push: true
         tags: |
-          ghcr.io/${{ github.repository_owner }}/rustdesk-update-api:${{ steps.extract_tag.outputs.tag }}
-          ghcr.io/${{ github.repository_owner }}/rustdesk-update-api:latest
+          ghcr.io/${{ github.repository }}:${{ steps.extract_tag.outputs.tag }}
 
   release:
     needs: build

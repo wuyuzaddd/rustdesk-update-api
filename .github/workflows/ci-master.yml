@@ -68,4 +68,4 @@ jobs:
         context: .
         push: true
         tags: |
-          ghcr.io/${{ github.repository_owner }}/rustdesk-update-api:latest
+          ghcr.io/${{ github.repository }}:latest
