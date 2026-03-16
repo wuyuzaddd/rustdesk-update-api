@@ -92,7 +92,7 @@ rustdesk-update-api/
 
 ```rust
 // 原配置
-const URL: &str = "https://rustdesk.com/api/update/check";
+const URL: &str = "https://api.rustdesk.com/version/latest";
 
 // 修改为你的域名
 const URL: &str = "https://update.yourdomain.com/version/latest";
