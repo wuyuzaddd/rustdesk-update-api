@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  rustdesk-update-api:
+    build: .
+    image: rustdesk-update-api:latest
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+    volumes:
+      # 启用 SSL 时取消注释以下行
+      # - ./nginx/ssl:/etc/nginx/ssl:ro
+      # 使用 .env 文件时取消注释以下行
+      # - ./.env:/app/.env:ro
+    environment:
+      - GITHUB_API_BASE=https://api.github.com/repos
+      # 请修改为你的 GitHub 用户名
+      - FORK_OWNER=your_github_username
+      - FORK_REPO=rustdesk
+      # 可选：设置 GitHub 个人访问令牌以提高 API 调用限额
+      - GITHUB_PAT=
+      # 请修改为你的域名
+      - DOMAIN=update.yourdomain.com
+      - SSL_ENABLED=false
+      - HTTP_PORT=8080
+      - HTTPS_PORT=8443
+      # 日志配置
+      - RUST_LOG=info
+      - RUST_BACKTRACE=1
+      # 时区配置
+      - TZ=Asia/Shanghai
+    restart: unless-stopped
