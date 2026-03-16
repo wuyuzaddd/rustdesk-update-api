@@ -7,7 +7,7 @@ services:
     ports:
       - "8080:8080"
       - "8443:8443"
-    volumes:
+    # volumes:
       # 启用 SSL 时取消注释以下行
       # - ./nginx/ssl:/etc/nginx/ssl:ro
       # 使用 .env 文件时取消注释以下行
