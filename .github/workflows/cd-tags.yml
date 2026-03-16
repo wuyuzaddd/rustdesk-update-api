@@ -73,7 +73,7 @@ jobs:
           ${{ secrets.DOCKERHUB_USERNAME }}/rustdesk-update-api:latest
 
     - name: Build and push to GitHub Container Registry
-      continue-on-error: true
+      # continue-on-error: true
       uses: docker/build-push-action@v4
       with:
         context: .
